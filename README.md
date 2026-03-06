@@ -52,3 +52,23 @@ Per supportare alcune fasi del processo analitico e migliorare l’efficienza ne
 
 Il progetto è stato inoltre ispirato ai progetti di data analysis realizzati da Luke Barousse, noto per i suoi contenuti educativi nel campo della data analytics e per i suoi esempi pratici di portfolio basati su SQL, Python e dashboard.
 
+# Analisi
+### 1. Conversion Rate per gruppo
+Scrivi una query che calcoli il numero di conversioni e il Conversion Rate (CR%) per ogni gruppo
+```sql
+WITH CONVERSIONI AS(
+	SELECT group_test,COUNT(*) AS conversioni 
+	FROM ab
+	WHERE conv='Yes'
+	GROUP BY group_test
+),
+TOTALI AS(
+SELECT group_test, COUNT(*) AS numerosità
+FROM ab
+GROUP BY group_test
+)
+SELECT TOTALI.group_test,ROUND((CONVERSIONI.conversioni*1.0)/TOTALI.numerosità,3) AS CR
+FROM CONVERSIONI 
+LEFT JOIN TOTALI ON TOTALI.group_test=CONVERSIONI.group_test
+```
+
